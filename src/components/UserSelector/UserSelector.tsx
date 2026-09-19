@@ -10,12 +10,14 @@ type Props = {
   onUserSelect: (newUser: User) => void;
 };
 
+const DEFAULT_IS_SELECTED = false;
+
 export const UserSelector: React.FC<Props> = ({
   users,
   selectedUser,
   onUserSelect,
 }) => {
-  const [isSelectOpened, setIsSelectOpened] = useState(false);
+  const [isSelectOpened, setIsSelectOpened] = useState(DEFAULT_IS_SELECTED);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -24,7 +26,7 @@ export const UserSelector: React.FC<Props> = ({
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setIsSelectOpened(false);
+        setIsSelectOpened(DEFAULT_IS_SELECTED);
       }
     };
 
@@ -68,7 +70,7 @@ export const UserSelector: React.FC<Props> = ({
               })}
               onClick={() => {
                 onUserSelect(user);
-                setIsSelectOpened(false);
+                setIsSelectOpened(DEFAULT_IS_SELECTED);
               }}
             >
               {user.name}

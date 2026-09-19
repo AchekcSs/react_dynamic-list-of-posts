@@ -35,24 +35,6 @@ export const PostsList: React.FC<Props> = ({
             onPostSelected={onPostSelected}
           />
         ))}
-
-        {/*<tr data-cy="Post">
-          <td data-cy="PostId">18</td>
-
-          <td data-cy="PostTitle">
-            voluptate et itaque vero tempora molestiae
-          </td>
-
-          <td className="has-text-right is-vcentered">
-            <button
-              type="button"
-              data-cy="PostButton"
-              className="button is-link"
-            >
-              Close
-            </button>
-          </td>
-        </tr>*/}
       </tbody>
     </table>
   </div>

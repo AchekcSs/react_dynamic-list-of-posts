@@ -17,6 +17,8 @@ import { getPostsByUserId } from './api/Posts';
 import { User } from './types/User';
 import { Post } from './types/Post';
 
+const DEFAULT_IS_WRITING_COMMENT = false;
+
 export const App = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -27,12 +29,9 @@ export const App = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
-  const [isWritingComment, setIsWritingComment] = useState(false);
-
-  useEffect(() => {
-    setSelectedPost(null);
-    setIsWritingComment(false);
-  }, [selectedUser]);
+  const [isWritingComment, setIsWritingComment] = useState(
+    DEFAULT_IS_WRITING_COMMENT,
+  );
 
   useEffect(() => {
     getUsers()
@@ -54,12 +53,14 @@ export const App = () => {
   const handleUserSelect = (user: User) => {
     setSelectedUser(user);
     setPosts([]);
+    setSelectedPost(null);
+    setIsWritingComment(DEFAULT_IS_WRITING_COMMENT);
     setErrorMessage('');
     setIsLoading(true);
   };
 
   const handlePostSelect = (post: Post | null) => {
-    setIsWritingComment(false);
+    setIsWritingComment(DEFAULT_IS_WRITING_COMMENT);
     setSelectedPost(post);
   };
 
