@@ -10,21 +10,18 @@ import { Post } from '../../types/Post';
 import { Comment as CommentType } from '../../types/Comment';
 
 type Props = {
-  post: Post | null;
-  isWritingComment: boolean;
-  onCommentWriting: (value: boolean) => void;
+  post: Post;
 };
 
-export const PostDetails: React.FC<Props> = ({
-  post,
-  isWritingComment,
-  onCommentWriting,
-}) => {
+export const PostDetails: React.FC<Props> = ({ post }) => {
   const [comments, setComments] = useState<CommentType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isWritingComment, setIsWritingComment] = useState(false);
 
   useEffect(() => {
+    setIsWritingComment(false);
+
     if (post) {
       setIsLoading(true);
       getCommentsByPostId(post.id)
@@ -61,8 +58,10 @@ export const PostDetails: React.FC<Props> = ({
           </div>
         )}
 
-        {post && !isLoading && !errorMessage ? (
-          comments.length > 0 ? (
+        {post &&
+          !isLoading &&
+          !errorMessage &&
+          (comments.length > 0 ? (
             <>
               <p className="title is-4">Comments:</p>
               <CommentList
@@ -74,12 +73,12 @@ export const PostDetails: React.FC<Props> = ({
             <p className="title is-4" data-cy="NoCommentsMessage">
               No comments yet
             </p>
-          )
-        ) : null}
+          ))}
       </div>
 
-      {!isLoading && !errorMessage ? (
-        isWritingComment ? (
+      {!isLoading &&
+        !errorMessage &&
+        (isWritingComment ? (
           <NewCommentForm
             selectedPostId={post?.id}
             onFormSubmit={addNewComment}
@@ -89,12 +88,11 @@ export const PostDetails: React.FC<Props> = ({
             data-cy="WriteCommentButton"
             type="button"
             className="button is-link"
-            onClick={() => onCommentWriting(true)}
+            onClick={() => setIsWritingComment(true)}
           >
             Write a comment
           </button>
-        )
-      ) : null}
+        ))}
     </div>
   );
 };

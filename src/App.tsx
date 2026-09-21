@@ -17,8 +17,6 @@ import { getPostsByUserId } from './api/Posts';
 import { User } from './types/User';
 import { Post } from './types/Post';
 
-const DEFAULT_IS_WRITING_COMMENT = false;
-
 export const App = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -28,10 +26,6 @@ export const App = () => {
 
   const [posts, setPosts] = useState<Post[]>([]);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-
-  const [isWritingComment, setIsWritingComment] = useState(
-    DEFAULT_IS_WRITING_COMMENT,
-  );
 
   useEffect(() => {
     getUsers()
@@ -54,13 +48,11 @@ export const App = () => {
     setSelectedUser(user);
     setPosts([]);
     setSelectedPost(null);
-    setIsWritingComment(DEFAULT_IS_WRITING_COMMENT);
     setErrorMessage('');
     setIsLoading(true);
   };
 
   const handlePostSelect = (post: Post | null) => {
-    setIsWritingComment(DEFAULT_IS_WRITING_COMMENT);
     setSelectedPost(post);
   };
 
@@ -94,8 +86,10 @@ export const App = () => {
                   </div>
                 )}
 
-                {!isLoading && selectedUser && !errorMessage ? (
-                  posts.length > 0 ? (
+                {!isLoading &&
+                  selectedUser &&
+                  !errorMessage &&
+                  (posts.length > 0 ? (
                     <PostsList
                       posts={posts}
                       selectedPost={selectedPost}
@@ -108,8 +102,7 @@ export const App = () => {
                     >
                       No posts yet
                     </div>
-                  )
-                ) : null}
+                  ))}
               </div>
             </div>
           </div>
@@ -121,13 +114,7 @@ export const App = () => {
             })}
           >
             <div className="tile is-child box is-success ">
-              {selectedPost && (
-                <PostDetails
-                  post={selectedPost}
-                  isWritingComment={isWritingComment}
-                  onCommentWriting={setIsWritingComment}
-                />
-              )}
+              {selectedPost && <PostDetails post={selectedPost} />}
             </div>
           </div>
         </div>
